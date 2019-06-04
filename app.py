@@ -10,15 +10,31 @@ kg = KnowledgeGraph()
 @app.route("/", methods=['GET', 'POST'])
 def welcome():
     data = request.get_json()
+    #print(data)
     intent = data['queryResult']['intent']['displayName']
     message_text = data['queryResult']['queryText']
-    actual_value = data['queryResult']['parameters']['number']
+    actual_value = data['queryResult']['parameters']['float_measure']
     print(f'Intent: {intent}')
 
     if intent == 'write_measurement':
-        #print(actual_value)
+        #print(type(actual_value))
+        #print(f'Actual value: {actual_value}')
         #gdocs.insert_text(message_text)
-        gsheets.write_actual_size(float(round(actual_value, 2)))
+        gsheets.write_actual_size(actual_value)
+
+        response = {
+            "fulfillmentMessages": [
+                {
+                    "text": {
+                        "text": [
+                            "Der Wert " + actual_value + " wurde eingetragen."
+                        ]
+                    }
+                }
+            ],
+        }
+
+        return jsonify(response)
     elif intent == 'read_measurements':
         spec_value = gsheets.get_spec_size()
         #print(f'Spec value: {spec_value}')
@@ -28,7 +44,7 @@ def welcome():
                 {
                     "text": {
                         "text": [
-                            spec_value
+                            "Das Istmaß beträgt: " + spec_value
                         ]
                     }
                 }

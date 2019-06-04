@@ -11,7 +11,7 @@ ROOT_DIR = os.path.dirname(os.path.abspath(__file__)) + '\\'
 
 # The ID and range of a sample spreadsheet.
 SPREADSHEET_ID = '1hcCa3ZhUSS83fZlQuLX2X68NlB_te9kV5QPUJxuA5fI'
-RANGE_NAME = 'Tabellenblatt1!B2:C2'
+RANGE_NAME = 'Tabellenblatt1!C7:C7'
 
 def main():
     """Shows basic usage of the Sheets API.
@@ -71,7 +71,7 @@ def write_actual_size(value):
         'values': values
     }
     value_input_option = 'USER_ENTERED'
-    range_name = "Tabellenblatt1!C2:C2"
+    range_name = "Tabellenblatt1!C8:C8"
     result = service.spreadsheets().values().update(
         spreadsheetId=SPREADSHEET_ID, range=range_name,
         valueInputOption=value_input_option, body=body).execute()
@@ -80,6 +80,6 @@ def write_actual_size(value):
 
 if __name__ == '__main__':
     #main()
-    write_actual_size('12.03')
-    #spec_value = get_spec_size()
-    #print(spec_value)
+    #write_actual_size('12.03')
+    spec_value = get_spec_size()
+    print(spec_value)
