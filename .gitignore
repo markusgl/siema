@@ -141,3 +141,4 @@ playground/
 validation/relation_extraction/results
 
 *.mp3
+token.pickle
