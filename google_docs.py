@@ -64,9 +64,4 @@ def insert_text(text):
     result = service.documents().batchUpdate(
         documentId=DOCUMENT_ID, body={'requests': requests}).execute()
 
-    print(result)
 
-
-#if __name__ == '__main__':
-    #login()
-#    insert_text('Messung1')
