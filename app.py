@@ -15,6 +15,7 @@ def welcome():
     message_text = data['queryResult']['queryText']
     actual_value = data['queryResult']['parameters']['float_measure']
     print(f'Intent: {intent}')
+    print(f'Message text: {message_text}')
 
     if intent == 'write_measurement':
         #print(type(actual_value))
@@ -40,6 +41,7 @@ def welcome():
         #print(f'Spec value: {spec_value}')
 
         response = {
+            "fulfillmentText": "Zu welcher Uhrzeit?",
             "fulfillmentMessages": [
                 {
                     "text": {
