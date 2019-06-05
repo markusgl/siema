@@ -1,21 +1,20 @@
 from flask import Flask, render_template, request, jsonify
 from knowledge_graph import KnowledgeGraph
-import google_docs as gdocs
-import google_sheets as gsheets
+from google_sheets import GoogleSheets
 
 app = Flask(__name__)
 kg = KnowledgeGraph()
-
+gsheets = GoogleSheets()
 
 @app.route("/", methods=['GET', 'POST'])
 def welcome():
     data = request.get_json()
     #print(data)
     intent = data['queryResult']['intent']['displayName']
-    message_text = data['queryResult']['queryText']
+    #message_text = data['queryResult']['queryText']
     actual_value = data['queryResult']['parameters']['float_measure']
-    print(f'Intent: {intent}')
-    print(f'Message text: {message_text}')
+    #print(f'Intent: {intent}')
+    #print(f'Message text: {message_text}')
 
     if intent == 'write_measurement':
         #print(type(actual_value))
@@ -40,17 +39,33 @@ def welcome():
         spec_value = gsheets.get_spec_size()
         #print(f'Spec value: {spec_value}')
 
-        response = {
-            "fulfillmentText": "Zu welcher Uhrzeit?",
+        response_old = {
             "fulfillmentMessages": [
                 {
                     "text": {
                         "text": [
-                            "Das Istmaß beträgt: " + spec_value
+                            "Das Istmaß beträgt: " + spec_value + " mm"
                         ]
                     }
                 }
             ],
+        }
+
+        response = {
+            "payload": {
+                "google": {
+                    "expectUserResponse": True,
+                    "richResponse": {
+                        "items": [
+                            {
+                                "simpleResponse": {
+                                    "textToSpeech": "Das Istmaß beträgt: " + spec_value + " mm"
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
         }
         return jsonify(response)
 
